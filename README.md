@@ -1,10 +1,10 @@
-# 🚀 FuturesX-Trader: High-Performance Binance Futures Bot
+#  FuturesX-Trader: High-Performance Binance Futures Bot
 
 Welcome to **FuturesX-Trader**. This project isn't just another trading script; it's a carefully architected, production-ready bot built for the **Binance Futures Testnet (USDT-M)**. Whether you're looking to automate basic trades or explore advanced order types with custom leverage, this bot provides the stable foundation you need.
 
 ---
 
-## 👨‍💻 Why I Built This (A Note from the Developer)
+##  Why I Built This (A Note from the Developer)
 
 In the high-stakes world of crypto futures, precision is everything. I designed this bot with a "reliability first" philosophy. Most bots fail because of poor error handling or lack of clear logging—FuturesX-Trader solves this by ensuring every action is validated, logged, and monitored. 
 
