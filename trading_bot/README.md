@@ -95,3 +95,9 @@ All requests, responses, and errors are logged to `trading_bot.log`. You can mon
 ```bash
 tail -f trading_bot.log
 ```
+## Verification and Logs
+
+For the purpose of this assignment, a `simulation.py` script and a `trading_bot.log` file are provided in the repository.
+
+- **`simulation.py`**: This script mocks the Binance API response to verify the logic and generate sample logs without requiring real API keys.
+- **`trading_bot.log`**: Contains the logged output from a simulated MARKET order and a LIMIT order as required by the assignment deliverables.
