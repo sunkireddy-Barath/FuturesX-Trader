@@ -20,7 +20,7 @@ def run_simulation():
     market_response = {
         'orderId': 12345678,
         'status': 'FILLED',
-        'executedQty': '0.00100000',
+        'executedQty': '0.10000000',
         'avgPrice': '65000.50',
         'symbol': 'BTCUSDT',
         'side': 'BUY',
@@ -38,16 +38,16 @@ def run_simulation():
         'type': 'LIMIT'
     }
 
-    # 1. Simulate MARKET BUy Order
-    print("\n--- Simulating MARKET BUY Order ---")
-    mock_client_instance.futures_create_order.return_value = market_response
-    
     # Create the wrapper client with the mock
     bot_client = bot.client.BinanceFuturesClient("mock_key", "mock_secret")
     bot_client.client = mock_client_instance
     
+    # 1. Simulate MARKET BUY Order with Leverage
+    print("\n--- Simulating MARKET BUY Order with Leverage ---")
+    mock_client_instance.futures_create_order.return_value = market_response
+    
     bot.orders.execute_order(
-        bot_client, "BTCUSDT", "BUY", "MARKET", 0.001
+        bot_client, "BTCUSDT", "BUY", "MARKET", 0.1, leverage=10, margin_type="ISOLATED"
     )
 
     # 2. Simulate LIMIT SELL Order
@@ -55,10 +55,10 @@ def run_simulation():
     mock_client_instance.futures_create_order.return_value = limit_response
     
     bot.orders.execute_order(
-        bot_client, "BTCUSDT", "SELL", "LIMIT", 0.001, price=60000
+        bot_client, "BTCUSDT", "SELL", "LIMIT", 0.05, price=60000
     )
 
-    print("\nSimulation complete. 'trading_bot.log' has been generated.")
+    print("\nSimulation complete. 'trading_bot.log' has been updated.")
 
 if __name__ == "__main__":
     # Add project root to path so we can import bot
