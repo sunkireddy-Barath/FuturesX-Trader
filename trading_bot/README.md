@@ -1,103 +1,125 @@
-# Binance Futures Testnet Trading Bot
+# FuturesX-Trader: Binance Futures Testnet Bot
 
-A high-quality, production-ready CLI-based trading bot for placing MARKET, LIMIT, and STOP-LIMIT orders on Binance Futures Testnet (USDT-M).
+FuturesX-Trader is a production-grade, modular trading bot designed for the Binance Futures Testnet (USDT-M). It provides a robust architecture for executing **Market**, **Limit**, and **Stop-Limit** orders with advanced controls for **Leverage** and **Margin Management**.
 
-## Key Features
+---
 
-- **Order Types**: Support for MARKET, LIMIT, and STOP-LIMIT orders.
-- **Interactive Mode**: Guided menu-driven order placement (`--interactive`).
-- **Advanced Controls**: Set Leverage (1-125x) and Margin Type (ISOLATED/CROSS).
-- **Validation**: Robust CLI input validation and real-time feedback.
-- **Logging**: Detailed structured logging to both console and `trading_bot.log`.
-- **Testing**: Built-in unit tests for core validation logic.
+## 🏛️ System Architecture
 
-## Project Structure
+The project follows a clean, decoupled architecture separating the user interface (CLI/Web), business logic, and the API communication layer.
 
+```mermaid
+graph TD
+    subgraph User_Interface ["User Interfaces"]
+        CLI[cli.py - Argument Parser]
+        Interactive[cli.py - Interactive Menu]
+        WebUI[web/app.py - FastAPI Dashboard]
+    end
+
+    subgraph Bot_Core ["Bot Core (USDT-M)"]
+        Orders[bot/orders.py - Execution Flow]
+        Validators[bot/validators.py - Input Validation]
+        Client[bot/client.py - API Wrapper]
+        Config[bot/config.py - Config Manager]
+        LogConfig[bot/logging_config.py - Log Setup]
+    end
+
+    subgraph External ["External Services"]
+        BinanceAPI[Binance Futures Testnet API]
+        LogFile[(trading_bot.log)]
+        EnvFile[.env]
+    end
+
+    %% Interactions
+    CLI --> Validators
+    Interactive --> Validators
+    WebUI --> LogFile
+    
+    Validators --> Orders
+    Orders --> Client
+    Client --> BinanceAPI
+    Client --> LogConfig
+    LogConfig --> LogFile
+    Config --> EnvFile
+    Config --> Client
 ```
+
+---
+
+## 🚀 Key Features
+
+- **Multi-Interface**: Supports standard CLI flags, an interactive guided menu, and a premium web dashboard.
+- **Advanced Order Types**: Handle Market, Limit, and Stop-Limit orders with ease.
+- **Risk Management**: Direct support for setting leverage (up to 125x) and switching between Cross and Isolated margin.
+- **Robust Validation**: Pre-flight checks for symbol correctness, positive quantities, and required price fields.
+- **Comprehensive Logging**: Every API request and response is captured with timestamps in a structured log file.
+- **Developer-Friendly**: Includes a full unit test suite and automation via `Makefile` and `setup.sh`.
+
+---
+
+## 📁 Project Structure
+
+```text
 trading_bot/
-├── bot/
-│   ├── __init__.py
-│   ├── client.py        # Binance API wrapper with leverage/margin support
-│   ├── config.py        # Centralized configuration management
-│   ├── orders.py        # Order execution and display logic
-│   ├── validators.py    # CLI and business logic validation
-│   └── logging_config.py # Structured logging setup
-├── tests/
-│   ├── __init__.py
-│   └── test_validators.py # Unit tests for validation logic
-├── cli.py               # Main CLI entry point (supports args & interactive)
-├── simulation.py        # Mock simulation for log generation
-├── trading_bot.log      # Sample log file (Market & Limit orders)
-├── requirements.txt     # Dependencies
-└── README.md            # Documentation
+├── bot/                     # Core Business Logic
+│   ├── client.py            # High-level Binance API wrapper
+│   ├── config.py            # Centralized settings and ENV loading
+│   ├── exceptions.py        # Custom trading exceptions
+│   ├── logging_config.py    # Dual-output (Console/File) logger
+│   ├── orders.py            # Order management & response display
+│   └── validators.py        # Input & business rule validation
+├── tests/                   # Automated Testing
+│   └── test_validators.py   # Unit tests for validation logic
+├── web/                     # Monitoring Interface (Bonus)
+│   ├── app.py               # FastAPI backend
+│   └── templates/           # Premium HTML5 dashboard
+├── cli.py                   # Main entry point (Standard & Interactive)
+├── Makefile                 # Shortcuts for test/run/ui
+├── setup.sh                 # One-click installation script
+├── requirements.txt         # Dependency manifest
+└── trading_bot.log          # Operational logs
 ```
 
-## Setup Instructions
+---
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd trading_bot
-   ```
+## 🛠️ Quick Start
 
-2. **Create a Virtual Environment**:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-
-3. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configure API Credentials**:
-   Copy `.env.example` to `.env` and add your Binance Futures Testnet API keys:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your keys
-   ```
-
-## Usage
-
-### 1. Interactive Mode (Recommended)
-Guided mode that prompts you for all necessary information:
+### 1. Installation
+The fastest way to get started is using the automated setup script:
 ```bash
-python cli.py --interactive
+bash setup.sh
+```
+This will create a virtual environment, install dependencies, and generate a `.env` template.
+
+### 2. Configuration
+Update your `.env` file with your Binance Testnet keys:
+```env
+BINANCE_API_KEY=your_key
+BINANCE_API_SECRET=your_secret
 ```
 
-### 2. Command Line Arguments
-Place orders directly via CLI flags:
+### 3. Usage
+- **Interactive Mode**: `make run` or `python cli.py --interactive`
+- **Market Order**: `python cli.py --symbol BTCUSDT --side BUY --type MARKET --quantity 0.001`
+- **Web Dashboard**: `make ui` (Visit http://localhost:8000)
+- **Run Tests**: `make test`
 
-- **MARKET Order**:
-  ```bash
-  python cli.py --symbol BTCUSDT --side BUY --type MARKET --quantity 0.001
-  ```
+---
 
-- **LIMIT Order**:
-  ```bash
-  python cli.py --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.001 --price 60000
-  ```
+## 📊 Data Flow
 
-- **Advanced Options** (Leverage & Margin):
-  ```bash
-  python cli.py --symbol BTCUSDT --side BUY --type MARKET --quantity 0.001 --leverage 10 --margin_type ISOLATED
-  ```
+1. **Input**: User provides order details via CLI or Interactive menu.
+2. **Validation**: `validators.py` ensures the data is logically sound (e.g., price > 0 for Limit).
+3. **Coordination**: `orders.py` wraps the request, preparing logger and UI updates.
+4. **Execution**: `client.py` signs the request and sends it to the Binance Testnet.
+5. **Logging**: `logging_config.py` captures the JSON response for debugging and auditing.
+6. **Monitoring**: The Web Dashboard parses the log file to provide a real-time view of activities.
 
-## Running Tests
+---
 
-Verify the validation logic using the built-in tests:
-```bash
-PYTHONPATH=. python3 tests/test_validators.py
-```
+## 🛡️ Error Handling
 
-## Verification and Logs
-
-- **`simulation.py`**: Use this to generate sample logs without real API keys.
-- **`trading_bot.log`**: Sample logs included for MARKET and LIMIT orders as per assignment deliverables.
-
-## Assumptions
-
-- Trading strictly on **USDT-M Futures Testnet**.
-- Environment variables are managed via `python-dotenv`.
-- The bot handles `BinanceAPIException` for common issues like insufficient margin or invalid symbols.
+The bot implements a custom exception hierarchy (`TradingBotError`) to handle:
+- **Validation Errors**: Invalid user inputs.
+- **API Errors**: Insufficient balance, invalid symbols, or rate limiting.
+- **Network Errors**: Connectivity issues using robust handlers in `python-binance`.
