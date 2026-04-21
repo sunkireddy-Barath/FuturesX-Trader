@@ -14,3 +14,11 @@
 2026-04-21 21:56:29,906 - bot.client - INFO - Order response received: {'orderId': 12345678, 'status': 'FILLED', 'executedQty': '0.10000000', 'avgPrice': '65000.50', 'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET'}
 2026-04-21 21:56:29,906 - bot.client - INFO - Sending order request: {'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'LIMIT', 'quantity': 0.05, 'price': '60000', 'timeInForce': 'GTC'}
 2026-04-21 21:56:29,906 - bot.client - INFO - Order response received: {'orderId': 87654321, 'status': 'NEW', 'executedQty': '0.00000000', 'avgPrice': '0.00', 'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'LIMIT'}
+2026-04-21 22:48:14,156 - root - INFO - Starting Trading Bot CLI...
+2026-04-21 22:48:14,156 - root - ERROR - API credentials missing. Please set BINANCE_API_KEY and BINANCE_API_SECRET.
+2026-04-21 22:48:21,706 - bot.client - INFO - Margin type set to ISOLATED for BTCUSDT: <MagicMock name='mock.futures_change_margin_type()' id='126642436556128'>
+2026-04-21 22:48:21,706 - bot.client - INFO - Leverage set to 10 for BTCUSDT: <MagicMock name='mock.futures_change_leverage()' id='126642433771376'>
+2026-04-21 22:48:21,707 - bot.client - INFO - Sending order request: {'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET', 'quantity': 0.1}
+2026-04-21 22:48:21,707 - bot.client - INFO - Order response received: {'orderId': 12345678, 'status': 'FILLED', 'executedQty': '0.10000000', 'avgPrice': '65000.50', 'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET'}
+2026-04-21 22:48:21,707 - bot.client - INFO - Sending order request: {'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'LIMIT', 'quantity': 0.05, 'price': '60000', 'timeInForce': 'GTC'}
+2026-04-21 22:48:21,707 - bot.client - INFO - Order response received: {'orderId': 87654321, 'status': 'NEW', 'executedQty': '0.00000000', 'avgPrice': '0.00', 'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'LIMIT'}
