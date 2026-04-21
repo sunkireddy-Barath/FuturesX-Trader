@@ -29,11 +29,44 @@ class BinanceFuturesClient:
             logger.error(f"Failed to connect to Binance API: {str(e)}")
             return False
 
-    def create_futures_order(self, symbol, side, type, quantity, price=None, stop_price=None):
+    def set_margin_type(self, symbol, margin_type):
+        """
+        Sets the margin type for the symbol (ISOLATED or CROSSED).
+        """
+        try:
+            response = self.client.futures_change_margin_type(symbol=symbol, marginType=margin_type.upper())
+            logger.info(f"Margin type set to {margin_type} for {symbol}: {response}")
+            return response
+        except BinanceAPIException as e:
+            if "No need to change margin type" in e.message:
+                logger.info(f"Margin type is already {margin_type} for {symbol}.")
+                return None
+            logger.error(f"Failed to set margin type: {e.message}")
+            raise
+
+    def set_leverage(self, symbol, leverage):
+        """
+        Sets the leverage for the symbol.
+        """
+        try:
+            response = self.client.futures_change_leverage(symbol=symbol, leverage=leverage)
+            logger.info(f"Leverage set to {leverage} for {symbol}: {response}")
+            return response
+        except BinanceAPIException as e:
+            logger.error(f"Failed to set leverage: {e.message}")
+            raise
+
+    def create_futures_order(self, symbol, side, type, quantity, price=None, stop_price=None, leverage=None, margin_type=None):
         """
         Places a futures order on USDT-M testnet.
         """
         try:
+            # Optionally set leverage and margin type if provided
+            if margin_type:
+                self.set_margin_type(symbol, margin_type)
+            if leverage:
+                self.set_leverage(symbol, leverage)
+
             params = {
                 'symbol': symbol,
                 'side': side.upper(),
