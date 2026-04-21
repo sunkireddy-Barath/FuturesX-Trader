@@ -16,6 +16,9 @@ test:
 run:
 	./venv/bin/python3 cli.py --interactive
 
+ui:
+	PYTHONPATH=. ./venv/bin/python3 web/app.py
+
 clean:
 	rm -rf venv
 	rm -rf trading_bot.log
