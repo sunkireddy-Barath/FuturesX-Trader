@@ -1,0 +1,4 @@
+2026-04-21 21:43:54,832 - bot.client - INFO - Sending order request: {'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET', 'quantity': 0.001}
+2026-04-21 21:43:54,832 - bot.client - INFO - Order response received: {'orderId': 12345678, 'status': 'FILLED', 'executedQty': '0.00100000', 'avgPrice': '65000.50', 'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET'}
+2026-04-21 21:43:54,832 - bot.client - INFO - Sending order request: {'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'LIMIT', 'quantity': 0.001, 'price': '60000', 'timeInForce': 'GTC'}
+2026-04-21 21:43:54,832 - bot.client - INFO - Order response received: {'orderId': 87654321, 'status': 'NEW', 'executedQty': '0.00000000', 'avgPrice': '0.00', 'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'LIMIT'}
